@@ -2,7 +2,7 @@ using System;
 
 namespace BookStore.DTOs.Order;
 
-public class ViewOrderDetailDTO
+public class OrderDetailViewDTO
 {
     public int BookId { get; set; }
     public string? BookTitle { get; set; }

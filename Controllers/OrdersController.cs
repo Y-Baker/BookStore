@@ -15,7 +15,7 @@ namespace BookStore.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private const string CustomerRole = "Customer"; 
+        private const string CustomerRole = "Customer";
         private readonly UnitOfWork unit;
         private readonly UserManager<Customer> userManager;
         private readonly IMapper mapper;
@@ -56,7 +56,7 @@ namespace BookStore.Controllers
         [SwaggerResponse(200, "The list of orders", typeof(List<OrderViewDTO>))]
         [SwaggerResponse(401, "The user is not authorized to view orders, you must be a Customer")]
         [Produces("application/json")]
-        [HttpGet]
+        [HttpGet("my")]
         [Authorize(Roles = CustomerRole)]
         public IActionResult GetOrders()
         {
@@ -76,7 +76,7 @@ namespace BookStore.Controllers
         [SwaggerResponse(401, "The user is not authorized to create an order, you must be a Customer")]
         [Produces("application/json")]
         [Consumes("application/json")]
-        [Authorize (Roles = CustomerRole)]
+        [Authorize(Roles = CustomerRole)]
         [HttpPost]
         public IActionResult CreateOrder(List<OrderDetailDTO> orderDetails)
         {
@@ -112,7 +112,7 @@ namespace BookStore.Controllers
 
                 if (book.Stock < detail.Quantity)
                     return BadRequest("Not enough stock");
-                
+
                 totalPrice += book.Price * detail.Quantity;
                 order.Details.Add(orderDetail);
                 book.Stock -= detail.Quantity;

@@ -44,7 +44,7 @@ public class MapperConfig : Profile
         CreateMap<Order, OrderViewDTO>()
             .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer != null ? src.Customer.FullName : "Unknown"))
             .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.Details.Sum(od => od.Quantity * od.Book!.Price)));
-        CreateMap<OrderDetails, ViewOrderDetailDTO>()
+        CreateMap<OrderDetails, OrderDetailViewDTO>()
             .ForMember(dest => dest.BookTitle, opt => opt.MapFrom(src => src.Book != null ? src.Book.Title : "Unknown"));       
     }
 }

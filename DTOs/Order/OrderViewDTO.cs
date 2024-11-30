@@ -10,5 +10,5 @@ public class OrderViewDTO
     public decimal TotalPrice { get; set; }
     public Status Status { get; set; }
 
-    public List<ViewOrderDetailDTO> Details { get; set; } = new List<ViewOrderDetailDTO>();
+    public List<OrderDetailViewDTO> Details { get; set; } = new List<OrderDetailViewDTO>();
 }

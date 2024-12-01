@@ -21,6 +21,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddSingleton<JWT>();
+builder.Services.AddSingleton<FileService>();
 
 builder.Services.AddSwaggerGen(option =>
 {

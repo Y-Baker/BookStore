@@ -16,6 +16,9 @@ public class Book : BaseEntity
     [Column(TypeName = "date")]
     public DateOnly PublishDate { get; set; }
 
+    [Column("photo")]
+    public string? PhotoId { get; set; }
+
     [ForeignKey("Author")]
     public int AuthorId { get; set; }
 

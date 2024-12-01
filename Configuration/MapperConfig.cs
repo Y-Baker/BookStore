@@ -23,7 +23,8 @@ public class MapperConfig : Profile
 
         CreateMap<Book, BookViewDTO>()
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author != null ? src.Author.Name : "Unknown"))
-            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : "Unknown"));
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : "Unknown"))
+            .AfterMap((src, dest, context) => dest.PhotoUri = new Uri($"{context.Items["BaseUrl"]}/{src.PhotoId}"));
         CreateMap<AddBookDTO, Book>();
         CreateMap<EditBookDTO, Book>()
             .ForAllMembers(opt =>

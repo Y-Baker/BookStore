@@ -16,6 +16,7 @@ public class CategoriesController : ControllerBase
 {
     private readonly UnitOfWork unit;
     private readonly IMapper mapper;
+    private const string mediaEndPoint = $"api/media";
 
     public CategoriesController(UnitOfWork unit, IMapper mapper)
     {
@@ -57,11 +58,13 @@ public class CategoriesController : ControllerBase
     [HttpGet("{id}/books")]
     public IActionResult GetBooks(int id)
     {
+        string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/{mediaEndPoint}";
+
         Category? category = unit.Categories.SelectById(id);
         if (category is null) return NotFound();
 
         List<Book> books = unit.Books.SelectAll().Where(e => e.CategoryId == id).ToList();
-        List<BookViewDTO> views = mapper.Map<List<BookViewDTO>>(books);
+        List<BookViewDTO> views = mapper.Map<List<BookViewDTO>>(books, opt => opt.Items["BaseUrl"] = baseUrl);
 
         return Ok(views);
     }

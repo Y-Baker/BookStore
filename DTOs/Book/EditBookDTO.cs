@@ -15,7 +15,7 @@ public class EditBookDTO
 
     [DataType(DataType.Date)]
     public DateOnly publishdate { get; set; } = DateOnly.FromDateTime(DateTime.Today);
-    
+    public IFormFile? Photo { get; set; }
     public int AuthorId { get; set; }
     public int? CategoryId { get; set; }
 }

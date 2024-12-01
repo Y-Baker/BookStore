@@ -13,7 +13,7 @@ public class BookViewDTO
     public int Stock { get; set; }
 
     public DateOnly PublishDate { get; set; }
-
+    public Uri? PhotoUri { get; set; }
     public string? AuthorName { get; set; }
     public string? Category { get; set; }
 }

@@ -122,7 +122,6 @@ public class BooksController : ControllerBase
     [SwaggerResponse(404, "The book was not found")]
     [SwaggerResponse(401, "The user is not authorized to edit a book, you must be an Admin")]
     [Produces("application/json")]
-    [Consumes("application/json")]
     [HttpPut("{id}")]
     public IActionResult Edit(int id, EditBookDTO bookDTO)
     {

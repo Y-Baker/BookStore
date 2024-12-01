@@ -17,10 +17,10 @@ namespace BookStore.Controllers
     {
         private const string CustomerRole = "Customer";
         private readonly UnitOfWork unit;
-        private readonly UserManager<Customer> userManager;
+        private readonly UserManager<IdentityUser> userManager;
         private readonly IMapper mapper;
 
-        public OrdersController(UnitOfWork unit, UserManager<Customer> userManager, IMapper mapper)
+        public OrdersController(UnitOfWork unit, UserManager<IdentityUser> userManager, IMapper mapper)
         {
             this.unit = unit;
             this.userManager = userManager;
@@ -62,7 +62,7 @@ namespace BookStore.Controllers
         {
             if (User.Identity?.Name == null) return Unauthorized();
 
-            Customer? customer = userManager.FindByNameAsync(User.Identity.Name).Result;
+            Customer? customer = userManager.GetUsersInRoleAsync(CustomerRole).Result.OfType<Customer>().SingleOrDefault(c => c.UserName == User.Identity.Name);
             if (customer == null) return NotFound();
 
             List<Order> orders = unit.Orders.SelectOrdersByCustomerId(customer.Id);
@@ -84,7 +84,7 @@ namespace BookStore.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (User.Identity?.Name == null) return Unauthorized();
 
-            Customer? customer = userManager.FindByNameAsync(User.Identity.Name).Result;
+            Customer? customer = userManager.GetUsersInRoleAsync(CustomerRole).Result.OfType<Customer>().SingleOrDefault(c => c.UserName == User.Identity.Name);
             if (customer == null) return NotFound();
 
             Order order = new Order()
@@ -124,7 +124,9 @@ namespace BookStore.Controllers
             unit.Orders.Add(order);
             unit.Save();
 
-            return Created();
+            OrderViewDTO view = mapper.Map<OrderViewDTO>(order);
+
+            return CreatedAtAction(nameof(GetOrderById), new {id = order.Id}, view);
         }
 
         [SwaggerOperation(Summary = "Set the status of an order", Description = "Requires Customer role")]
@@ -140,7 +142,7 @@ namespace BookStore.Controllers
         {
             if (User.Identity?.Name == null) return Unauthorized();
 
-            Customer? customer = userManager.FindByNameAsync(User.Identity.Name).Result;
+            Customer? customer = userManager.GetUsersInRoleAsync(CustomerRole).Result.OfType<Customer>().SingleOrDefault(c => c.UserName == User.Identity.Name);
             if (customer == null) return NotFound();
 
             Order? order = unit.Orders.SelectById(id);
@@ -165,7 +167,7 @@ namespace BookStore.Controllers
         {
             if (User.Identity?.Name == null) return Unauthorized();
 
-            Customer? customer = userManager.FindByNameAsync(User.Identity.Name).Result;
+            Customer? customer = userManager.GetUsersInRoleAsync(CustomerRole).Result.OfType<Customer>().SingleOrDefault(c => c.UserName == User.Identity.Name);
             if (customer == null) return NotFound();
 
             Order? order = unit.Orders.SelectById(id);

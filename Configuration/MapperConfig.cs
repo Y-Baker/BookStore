@@ -43,6 +43,7 @@ public class MapperConfig : Profile
             opt.Condition((src, des, srcMember) => srcMember != null));
 
         CreateMap<Order, OrderViewDTO>()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
             .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer != null ? src.Customer.FullName : "Unknown"))
             .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.Details.Sum(od => od.Quantity * od.Book!.Price)));
         CreateMap<OrderDetails, OrderDetailViewDTO>()
